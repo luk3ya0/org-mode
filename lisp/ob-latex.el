@@ -79,7 +79,6 @@
 (defcustom org-babel-latex-preamble
   (lambda (_)
     "\\documentclass[preview]{standalone}
-\\def\\pgfsysdriver{pgfsys-tex4ht.def}
 ")
   "Closure which evaluates at runtime to the LaTeX preamble.
 
@@ -194,9 +193,7 @@ This function is called by `org-babel-execute-src-block'."
 	  ;; not included in the SVG/HTML case.
 	  (with-temp-file tex-file
 	    (insert (concat
-		     "\\documentclass[preview]{standalone}
-\\def\\pgfsysdriver{pgfsys-tex4ht.def}
-"
+		     "\\documentclass[preview]{standalone}"
 		     (mapconcat (lambda (pkg)
 				  (concat "\\usepackage" pkg))
 				org-babel-latex-htlatex-packages
