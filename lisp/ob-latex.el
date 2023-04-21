@@ -209,7 +209,10 @@ This function is called by `org-babel-execute-src-block'."
 		     "\\end{document}")))
 	  (when (file-exists-p out-file) (delete-file out-file))
 	  (let ((default-directory (file-name-directory tex-file)))
-	    (shell-command (format "%s %s" org-babel-latex-htlatex tex-file)))
+            (progn
+              (message (format "%s %s" org-babel-latex-htlatex tex-file))
+	      (shell-command (format "%s %s" org-babel-latex-htlatex tex-file)))
+            )
 	  (cond
 	   ((file-exists-p (concat (file-name-sans-extension tex-file) "-1.svg"))
 	    (if (string-suffix-p ".svg" out-file)
