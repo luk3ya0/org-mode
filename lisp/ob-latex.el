@@ -175,11 +175,17 @@ This function is called by `org-babel-execute-src-block'."
 	  (let ((tmp-pdf (org-babel-latex-tex-to-pdf tex-file)))
             (let* ((log-buf (get-buffer-create "*Org Babel LaTeX Output*"))
                    (err-msg "org babel latex failed")
-                   (img-out (org-compile-file
-	                     tmp-pdf
-                             (list org-babel-latex-pdf-svg-process)
-                             extension err-msg log-buf)))
-              (rename-file img-out out-file t))))
+                   (tex-svg (replace-regexp-in-string "[.]tex" ".svg" tex-file))
+                   ;; (img-out (org-compile-file
+	           ;;           tmp-pdf
+                   ;;           (list org-babel-latex-pdf-svg-process)
+                   ;;           extension err-msg log-buf))
+                   )
+              ;; (rename-file img-out out-file t)
+              (shell-command-to-string (format "tex2svg %s" tex-file))
+              (rename-file tex-svg out-file t)
+              ))
+          )
          ((string-suffix-p ".tikz" out-file)
 	  (when (file-exists-p out-file) (delete-file out-file))
 	  (with-temp-file out-file
